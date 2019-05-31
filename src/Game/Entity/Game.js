@@ -13,8 +13,8 @@ class Game {
      */
     constructor(weight, height) {
         this.numberOfAttack = 0;
-        this._weight = weight;
-        this._height = height;
+        this.weight = weight;
+        this.height = height;
         this.board = [];
         for (let i = 0; i < weight; i++) {
             this.board[i] = [];
@@ -133,9 +133,9 @@ class Game {
     _exceedBoardBoundary(coordinate, length, direction) {
         const { x, y } = coordinate;
         if ((direction === ShipDirection.HORIZONTAL &&
-            x + length > this._weight) ||
+            x + length > this.weight) ||
             (direction === ShipDirection.VERTICAL &&
-                y + length > this._height)) {
+                y + length > this.height)) {
             return true;
         }
         return false;
