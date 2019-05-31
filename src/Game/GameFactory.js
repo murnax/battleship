@@ -1,10 +1,17 @@
+const { Game } = require('.');
+
 class GameFactory {
 
-    static create() {
-
+    /**
+     * @param {number} weight
+     * @param {number} height
+     * @returns {Game}
+     */
+    static create(weight, height) {
+        return new Game(weight, height);
     }
 
-    reconstitute() {
+    static reconstitute() {
 
     }
 }
