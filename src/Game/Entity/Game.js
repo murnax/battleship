@@ -7,11 +7,12 @@ const Coordinate = require('./Coordinate');
 class Game {
 
     /**
-     * 
+     * @param {string} id
      * @param {number} weight
      * @param {number} height 
      */
-    constructor(weight, height) {
+    constructor(id, weight, height) {
+        this.id = id;
         this.numberOfAttack = 0;
         this.weight = weight;
         this.height = height;
