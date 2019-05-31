@@ -4,15 +4,17 @@
   "main": "Board.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/client -w src"
+    "dev": "nodemon -w src/ src/client"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "nodemon": "^1.19.1",
+    "mongoose": "^5.5.12",
     "uuid": "^3.3.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  },
   "description": ""
 }
