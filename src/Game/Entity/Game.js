@@ -8,15 +8,6 @@ class Game {
 
     /**
      * 
-     * @param {number} weight 
-     * @param {number} height 
-     */
-    static create(weight, height) {
-
-    }
-
-    /**
-     * 
      * @param {number} weight
      * @param {number} height 
      */
