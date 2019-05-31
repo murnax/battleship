@@ -1,5 +1,5 @@
 const ShipDirection = require('./ShipDirection');
-const { Ship, ShipType } = require('./Entity/Ship/Ship');
+const { Ship, ShipType } = require('./Ship/Ship');
 const { Grid, GridType } = require('./Grid');
 const DeployedShip = require('./DeployedShip');
 const Coordinate = require('./Coordinate');

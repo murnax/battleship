@@ -1,4 +1,4 @@
-const { Ship } = require('./Entity/Ship/Ship');
+const { Ship } = require('./Ship/Ship');
 const { Grid } = require('./Grid');
 
 class DeployedShip {

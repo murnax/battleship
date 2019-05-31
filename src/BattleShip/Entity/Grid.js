@@ -1,4 +1,4 @@
-const { Ship } = require('./Entity/Ship/Ship');
+const { Ship } = require('./Ship/Ship');
 
 class GridType {
     static get WATER() { return 'WATER'; }

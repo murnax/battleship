@@ -1,9 +1,8 @@
 const uuid = require('uuid');
-const Game = require('./Game');
-const { Ship, ShipType } = require('./Entity/Ship/Ship');
-const ShipDirection = require('./ShipDirection');
-const { Grid, GridType } = require('./Grid');
-const Coordinate = require('./Coordinate');
+
+const { Game, ShipDirection, Coordinate } = require('./BattleShip');
+const { Ship, ShipType } = require('./BattleShip').Ship;
+const { Grid, GridType } = require('./BattleShip').Grid;
 
 const game = new Game(10, 10);
 
