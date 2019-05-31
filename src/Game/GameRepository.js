@@ -10,7 +10,7 @@ const gameSchema = new mongoose.Schema({
 });
 const GameModel = mongoose.model('Game', gameSchema);
 
-const { GameFactory, Game } = require('.');
+const { Game } = require('.');
 
 class GameRepository {
 
@@ -24,11 +24,9 @@ class GameRepository {
      * @param {Game} game 
      */
     create(game) {
-        console.log(game);
         const gameEntityModel = new GameModel(game);
         gameEntityModel.save((err, data) => {
-            console.log(err);
-            console.log(data);
+            if (err) throw err;
         });
     }
 
