@@ -1,15 +1,18 @@
-const { GameRepository, GameFactory } = require('.');
+const { GameRepository, GameFactory, Game } = require('.');
 
 class GameService {
 
     /**
      * 
      * @param {GameRepository} gameRepository 
-     * @param {GameFactory} gameFactory 
      */
-    constructor(gameRepository, gameFactory) {
+    constructor(gameRepository) {
         this._gameRepository = gameRepository;
-        this._gameFactory = gameFactory;
+    }
+
+    async startGame() {
+        const game = GameFactory.create(10, 10);
+        await this._gameRepository.create(game);
     }
 }
 module.exports = GameService;
