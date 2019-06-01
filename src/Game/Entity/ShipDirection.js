@@ -1,6 +1,6 @@
 
 const ShipDirection = {
-    VERTICAL: Symbol('VERTICAL'),
-    HORIZONTAL: Symbol('HORIZONTAL')
+    VERTICAL: 'VERTICAL',
+    HORIZONTAL: 'HORIZONTAL'
 };
 module.exports = ShipDirection;
