@@ -4,6 +4,11 @@ const { Grid, GridType } = require('./Grid');
 const DeployedShip = require('./DeployedShip');
 const Coordinate = require('./Coordinate');
 
+const GamePhase = {
+    PLANNING: 'PLANNING',
+    BATTLE: 'BATTLE'
+};
+
 class Game {
 
     /**
@@ -23,6 +28,7 @@ class Game {
         this.availableShips[ShipType.DESTROYER] = 3;
         this.availableShips[ShipType.SUBMARINE] = 4;
         this.deployedShips = {};
+        this.phase = GamePhase.PLANNING;
     }
 
     _generateGrid(weight, height) {
@@ -95,6 +101,9 @@ class Game {
                 }
             }
         }
+
+        // Go battle phase if all ships have been deployed
+        if (!Object.keys(this.availableShips).length) this.phase = GamePhase.BATTLE;
     }
 
     /**
@@ -152,6 +161,10 @@ class Game {
      * @param {Coordinate} coordinate
      */
     attack(coordinate) {
+        if (this.phase !== GamePhase.BATTLE) {
+            throw new Error('Game is not in battle phase');
+        }
+
         const { x, y } = coordinate;
         const grid = this.board[y][x];
         console.log(`\nAttacking to x: ${grid.x}, y: ${grid.y}`);
