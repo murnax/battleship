@@ -36,15 +36,21 @@ app.post('/', async (req, res) => {
 });
 
 app.post('/reset', async (req, res) => {
-    await gameService.reset(req.query.id);
+    await gameService.reset(req.body.id);
     res.json({
         status: 200
     });
 });
 
+app.post('/attack', async (req, res) => {
+    const { id, x, y } = req.body;
+    await gameService.attack(id, x, y);
+    res.json('ok');
+});
+
 app.post('/ship', async (req, res) => {
-    const { id, direction, coordinate, ship_type } = req.body;
-    await gameService.placeShip(id, ship_type, coordinate.x, coordinate.y, direction);
+    const { id, direction, x, y, ship_type } = req.body;
+    await gameService.placeShip(id, ship_type, x, y, direction);
     res.json({ ok: 1 });
 });
 
