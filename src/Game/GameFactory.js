@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const { Game } = require('.');
+const { Grid, GridType } = require('.').Grid;
 
 class GameFactory {
 
@@ -17,9 +18,16 @@ class GameFactory {
      * @returns {Game}
      */
     reconstitute(gameEntityModel) {
-        const prototype = new Game('1', 10, 10);
-        gameEntityModel = _.pick(gameEntityModel, Object.keys(prototype))
+        if (!gameEntityModel.deployedShips) gameEntityModel.deployedShips = {};
+
+        gameEntityModel.board = gameEntityModel.board.map(n => n.map(grid => {
+            const { type, x, y, isAttacked, available } = grid;
+            return Grid.create(type, x, y, isAttacked, { available });
+        }));
+
+        gameEntityModel = _.pick(gameEntityModel, Object.keys(new Game('1', 10, 10)));
         const game = Object.assign(new Game('1', 10, 10), gameEntityModel);
+
         return game;
     }
 }
