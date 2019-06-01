@@ -189,7 +189,6 @@ class Game {
         }
         grid.attack();
         this.numberOfAttack++;
-        console.log(this);
     }
 
     reset() {
