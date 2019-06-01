@@ -11,7 +11,7 @@ const gameSchema = new Schema({
 });
 const GameModel = mongoose.model('Game', gameSchema);
 
-const { Game } = require('.');
+const { Game } = require('..');
 
 class GameRepository {
 
