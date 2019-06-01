@@ -7,7 +7,8 @@ const gameSchema = new Schema({
     board: { type: Array },
     height: { type: Number },
     weight: { type: Number },
-    numberOfAttack: { type: Number }
+    numberOfAttack: { type: Number },
+    phase: { type: String }
 });
 const GameModel = mongoose.model('Game', gameSchema);
 
