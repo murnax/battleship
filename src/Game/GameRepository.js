@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
-const gameSchema = new mongoose.Schema({
+const Schema = mongoose.Schema;
+const gameSchema = new Schema({
     id: String,
-    availableShips: { type: Map },
-    deployedShips: { type: Map },
+    availableShips: { type: Schema.Types.Mixed },
+    deployedShips: { type: Schema.Types.Mixed },
     board: { type: Array },
     height: { type: Number },
     weight: { type: Number },
@@ -36,9 +37,11 @@ class GameRepository {
      */
     async getGameByID(id) {
         // get entity model from db context
+        const entityModel = await GameModel.findOne({ id }).exec();
+
 
         // reconstitute domain model by passing entity model to convert in factory 
-        return await this._gameFactory.reconstitute(id);
+        return await this._gameFactory.reconstitute(entityModel);
     }
 
     /**
