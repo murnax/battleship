@@ -39,7 +39,6 @@ class GameRepository {
         // get entity model from db context
         const entityModel = await GameModel.findOne({ id }).exec();
 
-
         // reconstitute domain model by passing entity model to convert in factory 
         return await this._gameFactory.reconstitute(entityModel);
     }
@@ -49,7 +48,7 @@ class GameRepository {
      * @param {Game} game 
      */
     async update(game) {
-
+        await GameModel.updateOne({ id: game.id }, game).exec();
     }
 }
 module.exports = GameRepository;
