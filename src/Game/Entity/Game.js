@@ -16,19 +16,24 @@ class Game {
         this.numberOfAttack = 0;
         this.weight = weight;
         this.height = height;
-        this.board = [];
-        for (let i = 0; i < weight; i++) {
-            this.board[i] = [];
-            for (let j = 0; j < height; j++) {
-                this.board[i][j] = Grid.create(GridType.WATER, i, j, false, { available: true });
-            }
-        }
+        this.board = this._generateGrid(this.weight, this.height);
         this.availableShips = {};
         this.availableShips[ShipType.BATTLESHIP] = 1;
         this.availableShips[ShipType.CRUISER] = 2;
         this.availableShips[ShipType.DESTROYER] = 3;
         this.availableShips[ShipType.SUBMARINE] = 4;
         this.deployedShips = {};
+    }
+
+    _generateGrid(weight, height) {
+        let board = [];
+        for (let i = 0; i < weight; i++) {
+            board[i] = [];
+            for (let j = 0; j < height; j++) {
+                board[i][j] = Grid.create(GridType.WATER, i, j, false, { available: true });
+            }
+        }
+        return board;
     }
 
     /**
@@ -68,7 +73,7 @@ class Game {
             this.board[y][x] = grid;
         }
 
-        // Attach ship to deployed map
+        // Attach ship to deployed map        
         this.deployedShips[ship.id] = new DeployedShip(ship, shipGrids);
 
         // Detach ship from available map
