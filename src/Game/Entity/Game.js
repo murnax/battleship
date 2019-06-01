@@ -11,6 +11,9 @@ const GamePhase = {
 
 class Game {
 
+    get isPlanningPhase() { return this.phase === GamePhase.PLANNING };
+    get isBattlePhase() { return this.phase === GamePhase.BATTLE };
+
     /**
      * @param {string} id
      * @param {number} weight
@@ -162,7 +165,7 @@ class Game {
      */
     attack(coordinate) {
         if (this.phase !== GamePhase.BATTLE) {
-            throw new Error('Game is not in battle phase');
+            // throw new Error('Game is not in battle phase');
         }
 
         const { x, y } = coordinate;
@@ -174,16 +177,31 @@ class Game {
 
         if (grid.type === GridType.SHIP) {
             const deployedShip = this.deployedShips[grid.ship.id];
-            console.log(`Hit ${grid.ship.type}!`);
-            deployedShip.grids.forEach(n => {
-                n.attack();
-            });
-            deployedShip.ship.isAttacked = true;
+            console.log(`Hit!`);
+            grid.attack();
+
+            if (deployedShip.grids.every(n => n.isAttacked)) {
+                console.log(`Sank ${grid.ship.type}`);
+                deployedShip.ship.isAttacked = true;
+            }
         } else if (grid.type === GridType.WATER) {
             console.log('Miss!');
         }
         grid.attack();
         this.numberOfAttack++;
+        console.log(this);
+    }
+
+    reset() {
+        this.numberOfAttack = 0;
+        this.board = this._generateGrid(this.weight, this.height);
+        this.availableShips = {};
+        this.availableShips[ShipType.BATTLESHIP] = 1;
+        this.availableShips[ShipType.CRUISER] = 2;
+        this.availableShips[ShipType.DESTROYER] = 3;
+        this.availableShips[ShipType.SUBMARINE] = 4;
+        this.deployedShips = {};
+        this.phase = GamePhase.PLANNING;
     }
 }
 module.exports = Game;
