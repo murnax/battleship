@@ -12,6 +12,8 @@ const GamePhase = {
 
 class Game {
 
+    static get GamePhase() { return GamePhase; };
+
     get isPlanningPhase() { return this.phase === GamePhase.PLANNING };
     get isBattlePhase() { return this.phase === GamePhase.BATTLE };
     get isGameOver() { return this.phase === GamePhase.OVER };
