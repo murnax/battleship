@@ -31,34 +31,72 @@ class GameService {
         await this._gameRepository.update(game);
     }
 
+    /**
+     * Phanning phase
+     * - Defender
+     *   - 0: Available water grid
+     *   - 1: Unavailable water grid
+     *   - 2: Unavailable ship grid
+     * 
+     * Battle phase
+     * - Defender
+     *   - 0: Unattacked water grid
+     *   - 1: Attacked water grid
+     *   - 2: Unattacked ship grid
+     *   - 3: Attacked ship grid
+     *   - 4: Ship is sunk
+     * - Attacker
+     *   - 0: Unattacked grid
+     *   - 1: Attacked water grid
+     *   - 2: Attacked ship grid
+     *   - 3: Attacked ship grid and sunk already
+     * 
+     * @param {string} id 
+     * @param {string} userType 
+     */
     async getBoard(id, userType) {
-        const game = await this._gameRepository.getGameByID(id);
 
+        const game = await this._gameRepository.getGameByID(id);
+        let board;
         if (userType === 'ATTACKER') {
-            if (game.isBattlePhase) {
+            if (!game.isBattlePhase) {
                 throw new Error('Game is not in battle phase');
             }
+            board = game.board.map(n =>
+                n.map(m => {
+                    if (!m.isAttacked) return 0;
+                    if (m.isAttacked && m.type === GridType.WATER) return 1;
+                    if (m.isAttacked && m.type === GridType.SHIP) {
+                        if (m.ship.isSunk) return 3;
+                        return 2;
+                    }
+                }));
         } else if (userType === 'DEFENDER') {
             if (game.isBattlePhase) {
-                return game.board.map(n =>
-                    n.map(m =>
-                        m.type === GridType.WATER ? !m.isAttacked ? 0 : 1 : !m.isAttacked ? 2 : 3
-                    ));
+                board = game.board.map(n =>
+                    n.map(m => {
+                        if (m.type === GridType.WATER) {
+                            return !m.isAttacked ? 0 : 1;
+                        } else if (m.type === GridType.SHIP) {
+                            return m.ship.isSunk ? 4 : m.isAttacked ? 3 : 2;
+                        }
+                    }));
             } else if (game.isPlanningPhase) {
-                return game.board.map(n => n.map(m => m.available ? 0 : m.type === GridType.SHIP ? 2 : 1));
+                board = game.board.map(n => n.map(m => m.available ? 0 : m.type === GridType.SHIP ? 2 : 1));
             }
         }
-
-        const defenderViewDeployPhase = game.board.map(n => n.map(m => m.available ? 0 : m.type === GridType.SHIP ? 2 : 1));
-        console.log(defenderViewDeployPhase);
-
-        return defenderViewDeployPhase;
+        console.log(board);
+        return board;
     }
 
     async attack(id, x, y) {
-        const game = await this._gameRepository.getGameByID(id);
-        game.attack(new Coordinate(x, y));
-        await this._gameRepository.update(game);
+        try {
+            const game = await this._gameRepository.getGameByID(id);
+            game.attack(new Coordinate(x, y));
+            await this._gameRepository.update(game);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     async reset(id) {
