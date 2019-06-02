@@ -4,6 +4,7 @@ const gameSchema = new Schema({
     id: String,
     availableShips: { type: Schema.Types.Mixed },
     deployedShips: { type: Schema.Types.Mixed },
+    detroyedShips: { type: Schema.Types.Mixed },
     board: { type: Array },
     height: { type: Number },
     weight: { type: Number },

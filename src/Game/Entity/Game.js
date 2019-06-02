@@ -6,13 +6,15 @@ const Coordinate = require('./Coordinate');
 
 const GamePhase = {
     PLANNING: 'PLANNING',
-    BATTLE: 'BATTLE'
+    BATTLE: 'BATTLE',
+    OVER: 'OVER'
 };
 
 class Game {
 
     get isPlanningPhase() { return this.phase === GamePhase.PLANNING };
     get isBattlePhase() { return this.phase === GamePhase.BATTLE };
+    get isGameOver() { return this.phase === GamePhase.OVER };
 
     /**
      * @param {string} id
@@ -32,6 +34,7 @@ class Game {
         this.availableShips[ShipType.DESTROYER] = 3;
         this.availableShips[ShipType.SUBMARINE] = 4;
         this.deployedShips = {};
+        this.destroyedShips = {};
         this.phase = GamePhase.PLANNING;
     }
 
@@ -64,6 +67,10 @@ class Game {
      * @param {*} direction 
      */
     placeShip(ship, coordinate, direction) {
+        if (!this.isPlanningPhase) {
+            throw new Error('Game is not in planning phase');
+        }
+
         const { x, y } = coordinate;
 
         if (!(ship.type in this.availableShips)) {
@@ -165,8 +172,8 @@ class Game {
      * @param {Coordinate} coordinate
      */
     attack(coordinate) {
-        if (this.phase !== GamePhase.BATTLE) {
-            // throw new Error('Game is not in battle phase');
+        if (!this.isBattlePhase) {
+            throw new Error('Game is not in battle phase');
         }
 
         const { x, y } = coordinate;
@@ -184,6 +191,11 @@ class Game {
             if (deployedShip.grids.every(n => n.isAttacked)) {
                 console.log(`Sank ${grid.ship.type}`);
                 deployedShip.ship.isSunk = true;
+                this.destroyedShips[grid.ship.id] = deployedShip;
+                delete this.deployedShips[grid.ship.id];
+                if (!Object.keys(this.deployedShips).length) {
+                    this.phase = GamePhase.OVER;
+                }
             }
         } else if (grid.type === GridType.WATER) {
             console.log('Miss!');
