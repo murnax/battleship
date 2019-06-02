@@ -21,7 +21,8 @@ class Game {
      */
     constructor(id, weight, height) {
         this.id = id;
-        this.numberOfAttack = 0;
+        this.totalAttack = 0;
+        this.totalMissedAttack = 0;
         this.weight = weight;
         this.height = height;
         this.board = this._generateGrid(this.weight, this.height);
@@ -186,13 +187,14 @@ class Game {
             }
         } else if (grid.type === GridType.WATER) {
             console.log('Miss!');
+            this.totalMissedAttack++;
         }
         grid.attack();
-        this.numberOfAttack++;
+        this.totalAttack++;
     }
 
     reset() {
-        this.numberOfAttack = 0;
+        this.totalAttack = 0;
         this.board = this._generateGrid(this.weight, this.height);
         this.availableShips = {};
         this.availableShips[ShipType.BATTLESHIP] = 1;
