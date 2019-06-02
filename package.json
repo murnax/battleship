@@ -4,7 +4,8 @@
   "main": "Board.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon -w src/ src/index"
+    "dev": "nodemon -w src/ src/index",
+    "test:unit": "mocha $(find test/unit -name '*.spec.js')"
   },
   "keywords": [],
   "author": "",
