@@ -206,6 +206,10 @@ class Game {
     }
 
     reset() {
+        if (!this.isPlanningPhase) {
+            throw new Error('Game is not in planning phase');
+        }
+
         this.totalAttack = 0;
         this.board = this._generateGrid(this.weight, this.height);
         this.availableShips = {};
