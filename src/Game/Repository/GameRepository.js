@@ -40,6 +40,9 @@ class GameRepository {
     async getGameByID(id) {
         // get entity model from db context
         const entityModel = await GameModel.findOne({ id }).exec();
+        if (!entityModel) {
+            throw new Error('Game not found');
+        }
 
         // reconstitute domain model by passing entity model to convert in factory 
         return await this._gameFactory.reconstitute(entityModel);
