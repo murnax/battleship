@@ -101,21 +101,48 @@ describe('Game', () => {
                 done();
             });
 
-            it('When all ships are deployed, game will go to battle phase', done => {
-                done();
-            });
+
         });
-
-
     });
 
     describe('Battle phase', () => {
+        const game = new Game(uuid(), 10, 10);
+
+        before(() => {
+            // override available ships
+            game.availableShips = {};
+            game.availableShips[ShipType.BATTLESHIP] = 1;
+            game.availableShips[ShipType.SUBMARINE] = 2;
+        });
+
+        it('When all ships are deployed, game will go to battle phase', done => {
+            game.placeShip(Ship.create(uuid(), ShipType.BATTLESHIP), new Coordinate(0, 0), ShipDirection.HORIZONTAL);
+            game.placeShip(Ship.create(uuid(), ShipType.SUBMARINE), new Coordinate(4, 4), ShipDirection.HORIZONTAL);
+            game.placeShip(Ship.create(uuid(), ShipType.SUBMARINE), new Coordinate(8, 8), ShipDirection.HORIZONTAL);
+            expect(game.isBattlePhase).to.be.true;
+            done();
+        });
 
         it('Game can no longer be resetted after enter battle phase', done => {
+            expect(() => {
+                game.reset()
+            })
+                .to.throws(Error)
+                .includes({
+                    message: 'Game is not in planning phase'
+                });
             done();
         });
 
         describe('Attacking', () => {
+
+            it('When water grid is attacked, water grid will be marked as attacked', done => {
+                done();
+            });
+
+            it('Can not attack on attacked-grids', done => {
+                done();
+            });
 
             it('When ship grid is attacked, ship grid will be marked as attacked', done => {
                 done();
@@ -128,6 +155,8 @@ describe('Game', () => {
             it('When all ships are sunk, game will be over', done => {
                 done();
             });
+
+
         });
     });
 });
