@@ -21,8 +21,8 @@ class GameFactory {
     reconstitute(gameEntityModel) {
         if (!gameEntityModel.deployedShips) gameEntityModel.deployedShips = {};
         for (let deployedShip of Object.values(gameEntityModel.deployedShips)) {
-            const { id, type, isAttacked } = deployedShip.ship;
-            const ship = Ship.create(id, type, isAttacked);
+            const { id, type, isSunk } = deployedShip.ship;
+            const ship = Ship.create(id, type, isSunk);
             deployedShip.ship = ship;
             deployedShip.grids = deployedShip.grids.map(grid => {
                 const { type, x, y, isAttacked } = grid;
