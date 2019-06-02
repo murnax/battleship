@@ -11,36 +11,33 @@ class Ship {
     /**
      * @param {string} id
      * @param {ShipType} type 
+     * @param {boolean} isSunk
      * @returns {Ship}
      */
-    static create(id, type) {
+    static create(id, type, isSunk = false) {
         switch (type) {
             case ShipType.BATTLESHIP:
-                return new Battleship(id);
+                return new Battleship(id, isSunk);
             case ShipType.CRUISER:
-                return new Cruiser(id);
+                return new Cruiser(id, isSunk);
             case ShipType.DESTROYER:
-                return new Destroyer(id);
+                return new Destroyer(id, isSunk);
             case ShipType.SUBMARINE:
-                return new Submarine(id);
+                return new Submarine(id, isSunk);
             default:
                 throw new Error('Ship type is not valid');
         }
-    }
-
-    static reconstitute(id, type, isAttacked) {
-
     }
 
     /**
      * 
      * @param {string} id
      */
-    constructor(id) {
+    constructor(id, isSunk) {
         this.id = id;
         this.type = null;
         this.length = 0;
-        this.isAttacked = false;
+        this.isSunk = isSunk;
 
     }
 }
@@ -52,8 +49,8 @@ class Battleship extends Ship {
      * 
      * @param {string} id 
      */
-    constructor(id) {
-        super(id);
+    constructor(id, isSunk) {
+        super(id, isSunk);
         this.type = ShipType.BATTLESHIP;
         this.length = 4;
     }
@@ -65,8 +62,8 @@ class Cruiser extends Ship {
      * 
      * @param {string} id 
      */
-    constructor(id) {
-        super(id);
+    constructor(id, isSunk) {
+        super(id, isSunk);
         this.type = ShipType.CRUISER;
         this.length = 3;
     }
@@ -78,8 +75,8 @@ class Destroyer extends Ship {
      * 
      * @param {string} id 
      */
-    constructor(id) {
-        super(id);
+    constructor(id, isSunk) {
+        super(id, isSunk);
         this.type = ShipType.DESTROYER;
         this.length = 2;
     }
@@ -91,8 +88,8 @@ class Submarine extends Ship {
      * 
      * @param {string} id 
      */
-    constructor(id) {
-        super(id);
+    constructor(id, isSunk) {
+        super(id, isSunk);
         this.type = ShipType.SUBMARINE;
         this.length = 1;
     }

@@ -183,7 +183,7 @@ class Game {
 
             if (deployedShip.grids.every(n => n.isAttacked)) {
                 console.log(`Sank ${grid.ship.type}`);
-                deployedShip.ship.isAttacked = true;
+                deployedShip.ship.isSunk = true;
             }
         } else if (grid.type === GridType.WATER) {
             console.log('Miss!');
