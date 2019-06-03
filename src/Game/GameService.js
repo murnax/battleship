@@ -61,6 +61,9 @@ class GameService {
      */
     async getBoard(id, userType) {
         const game = await this._gameRepository.getGameByID(id);
+        if (game.isPlanningPhase && userType === 'ATTACKER') {
+            throw new Error('Game is in planning phase');
+        }
         return GameState.create(userType, game);
     }
 

@@ -1,5 +1,5 @@
 const chai = require('chai');
-// chai.use(require('chai-as-promised'));
+chai.use(require('chai-as-promised'));
 const expect = chai.expect;
 
 const uuid = require('uuid');
@@ -61,11 +61,9 @@ describe('Game service', () => {
 
             describe('Attacker', () => {
                 it('Can not access game status if game is in planning phase', async () => {
-                    try {
-                        await gameService.getBoard(gameID, defender)
-                    } catch (error) {
-                        expect(error.message).to.equal('Game is in planning phase');
-                    }
+                    return expect(gameService.getBoard(gameID, attacker))
+                        .to.eventually
+                        .be.rejected;
                 });
             });
         });
