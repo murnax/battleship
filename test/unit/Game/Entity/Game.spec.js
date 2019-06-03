@@ -88,19 +88,6 @@ describe('Game', () => {
                 done();
             });
 
-            it('Can not place ship that exceed board boundary', done => {
-                const ship = Ship.create(uuid(), ShipType.CRUISER);
-                const coordinate = new Coordinate(8, 8);
-                expect(() => {
-                    game.placeShip(ship, coordinate, ShipDirection.HORIZONTAL)
-                })
-                    .to.throw(Error)
-                    .includes({
-                        message: 'Ship\'s grids exceed boundary'
-                    });
-                done();
-            });
-
             it('Can not place ship on unavailable grid', done => {
                 const ship = Ship.create(uuid(), ShipType.CRUISER);
                 const coordinate = new Coordinate(4, 6);
@@ -114,7 +101,46 @@ describe('Game', () => {
                 done();
             });
 
+            describe('Can not place ship that exceed board boundary', () => {
+                it('Exceed bottom-right boundary', done => {
+                    const ship = Ship.create(uuid(), ShipType.CRUISER);
+                    const coordinate = new Coordinate(8, 8);
+                    expect(() => {
+                        game.placeShip(ship, coordinate, ShipDirection.HORIZONTAL)
+                    })
+                        .to.throw(Error)
+                        .includes({
+                            message: 'Ship\'s grids exceed boundary'
+                        });
+                    done();
+                });
 
+                it('Exceed bottom-left boundary', done => {
+                    const ship = Ship.create(uuid(), ShipType.CRUISER);
+                    const coordinate = new Coordinate(0, 8);
+                    expect(() => {
+                        game.placeShip(ship, coordinate, ShipDirection.VERTICAL)
+                    })
+                        .to.throw(Error)
+                        .includes({
+                            message: 'Ship\'s grids exceed boundary'
+                        });
+                    done();
+                });
+
+                it('Exceed top-right boundary', done => {
+                    const ship = Ship.create(uuid(), ShipType.CRUISER);
+                    const coordinate = new Coordinate(8, 0);
+                    expect(() => {
+                        game.placeShip(ship, coordinate, ShipDirection.HORIZONTAL)
+                    })
+                        .to.throw(Error)
+                        .includes({
+                            message: 'Ship\'s grids exceed boundary'
+                        });
+                    done();
+                });
+            });
         });
     });
 
