@@ -20,7 +20,7 @@ const defender = 'DEFENDER';
 
 describe('Game service', () => {
 
-    describe('Game status', () => {
+    describe('Board status', () => {
 
         describe('Planning phase', () => {
 
@@ -73,7 +73,7 @@ describe('Game service', () => {
             before(() => {
                 game.reset();
 
-                // override available ships
+                // reduce number of available ships to shorten test
                 game.availableShips = {};
                 game.availableShips[Ship.Type.BATTLESHIP] = 1;
                 game.availableShips[Ship.Type.SUBMARINE] = 2;
@@ -82,6 +82,11 @@ describe('Game service', () => {
                 game.placeShip(Ship.create(uuid(), Ship.Type.BATTLESHIP), new Coordinate(3, 3), ShipDirection.HORIZONTAL);
                 game.placeShip(Ship.create(uuid(), Ship.Type.SUBMARINE), new Coordinate(5, 5), ShipDirection.HORIZONTAL);
                 game.placeShip(Ship.create(uuid(), Ship.Type.SUBMARINE), new Coordinate(8, 8), ShipDirection.HORIZONTAL);
+            });
+
+            it('Enter battle phase after all ships are deployed', done => {
+                expect(game.isBattlePhase).to.be.true;
+                done();
             });
 
             describe('Defender', () => {
