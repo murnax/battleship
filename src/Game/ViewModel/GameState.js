@@ -78,10 +78,12 @@ class AttackerBattlePhase extends GameState {
                 }
             }));
 
-        for (let deployedShip of Object.keys(game.deployedShips)) {
-            delete game.deployedShips[deployedShip].grids;
+        this.deployedShips = {};
+        for (let deployedShipID of Object.keys(game.deployedShips)) {
+            this.deployedShips[deployedShipID] = {
+                ship: game.deployedShips[deployedShipID].ship
+            }
         }
-        this.deployedShips = game.deployedShips;
         this.destroyedShips = game.destroyedShips;
     }
 }

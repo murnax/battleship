@@ -87,9 +87,11 @@ describe('Game service', () => {
             describe('Defender', () => {
                 it('Unattacked water grid = 0', async () => {
                     const { board } = await gameService.getBoard(gameID, defender);
+
                     const unattackedWaterGrids = [].concat.apply([], game.board)
                         .filter(n => n.type === GridType.WATER && !n.isAttacked)
                         .map(n => { return { x: n.x, y: n.y } });
+
                     expect(unattackedWaterGrids.every(n => {
                         return board[n.y][n.x] === 0
                     })).to.be.true;
