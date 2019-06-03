@@ -57,37 +57,6 @@ class GameService {
      */
     async getBoard(id, userType) {
         const game = await this._gameRepository.getGameByID(id);
-        let board;
-        if (userType === 'ATTACKER') {
-            if (game.isPlanningPhase) {
-                throw new Error('Game is in planning phase');
-            }
-            board = game.board.map(n =>
-                n.map(m => {
-                    if (!m.isAttacked) return 0;
-                    if (m.isAttacked && m.type === GridType.WATER) return 1;
-                    if (m.isAttacked && m.type === GridType.SHIP) {
-                        if (m.ship.isSunk) return 3;
-                        return 2;
-                    }
-                }));
-        } else if (userType === 'DEFENDER') {
-            if (game.isBattlePhase) {
-                board = game.board.map(n =>
-                    n.map(m => {
-                        if (m.type === GridType.WATER) {
-                            return !m.isAttacked ? 0 : 1;
-                        } else if (m.type === GridType.SHIP) {
-                            return m.ship.isSunk ? 4 : m.isAttacked ? 3 : 2;
-                        }
-                    }));
-            } else if (game.isPlanningPhase) {
-                board = game.board.map(n => n.map(m => m.available ? 0 : m.type === GridType.SHIP ? 2 : 1));
-            }
-        }
-
-        // console.log(board);
-
         return GameState.create(userType, game);
     }
 
