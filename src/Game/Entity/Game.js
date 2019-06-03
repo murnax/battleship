@@ -1,5 +1,5 @@
 const ShipDirection = require('./ShipDirection');
-const { Ship, ShipType } = require('./Ship/Ship');
+const Ship = require('./Ship/Ship');
 const { Grid, GridType } = require('./Grid');
 const DeployedShip = require('./DeployedShip');
 const Coordinate = require('./Coordinate');
@@ -32,10 +32,10 @@ class Game {
         this.height = height;
         this.board = this._generateGrid(this.weight, this.height);
         this.availableShips = {};
-        this.availableShips[ShipType.BATTLESHIP] = 1;
-        this.availableShips[ShipType.CRUISER] = 2;
-        this.availableShips[ShipType.DESTROYER] = 3;
-        this.availableShips[ShipType.SUBMARINE] = 4;
+        this.availableShips[Ship.Type.BATTLESHIP] = 1;
+        this.availableShips[Ship.Type.CRUISER] = 2;
+        this.availableShips[Ship.Type.DESTROYER] = 3;
+        this.availableShips[Ship.Type.SUBMARINE] = 4;
         this.deployedShips = {};
         this.destroyedShips = {};
         this.phase = GamePhase.PLANNING;
@@ -211,10 +211,10 @@ class Game {
         this.totalAttack = 0;
         this.board = this._generateGrid(this.weight, this.height);
         this.availableShips = {};
-        this.availableShips[ShipType.BATTLESHIP] = 1;
-        this.availableShips[ShipType.CRUISER] = 2;
-        this.availableShips[ShipType.DESTROYER] = 3;
-        this.availableShips[ShipType.SUBMARINE] = 4;
+        this.availableShips[Ship.Type.BATTLESHIP] = 1;
+        this.availableShips[Ship.Type.CRUISER] = 2;
+        this.availableShips[Ship.Type.DESTROYER] = 3;
+        this.availableShips[Ship.Type.SUBMARINE] = 4;
         this.deployedShips = {};
         this.phase = GamePhase.PLANNING;
     }

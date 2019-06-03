@@ -1,7 +1,6 @@
 const _ = require('lodash');
-const { Game } = require('.');
+const { Game, Ship } = require('.');
 const { Grid, GridType } = require('.').Grid;
-const { Ship } = require('.').Ship;
 
 class GameFactory {
 

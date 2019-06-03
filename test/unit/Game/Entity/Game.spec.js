@@ -2,9 +2,8 @@ const chai = require('chai');
 const expect = chai.expect;
 
 const uuid = require('uuid');
-const { Game, Grid, ShipDirection, Coordinate, AttackResult } = require('../../../../src/Game');
+const { Game, Ship, Grid, ShipDirection, Coordinate, AttackResult } = require('../../../../src/Game');
 const { GridType } = require('../../../../src/Game').Grid;
-const { Ship, ShipType } = require('../../../../src/Game').Ship;
 
 describe('Game', () => {
 
@@ -41,22 +40,22 @@ describe('Game', () => {
 
             describe('Ships available to deploy', () => {
                 it('One battleship', done => {
-                    expect(game.availableShips[ShipType.BATTLESHIP]).to.equal(1);
+                    expect(game.availableShips[Ship.Type.BATTLESHIP]).to.equal(1);
                     done();
                 });
 
                 it('Two cruiser', done => {
-                    expect(game.availableShips[ShipType.CRUISER]).to.equal(2);
+                    expect(game.availableShips[Ship.Type.CRUISER]).to.equal(2);
                     done();
                 });
 
                 it('Three destroyer', done => {
-                    expect(game.availableShips[ShipType.DESTROYER]).to.equal(3);
+                    expect(game.availableShips[Ship.Type.DESTROYER]).to.equal(3);
                     done();
                 });
 
                 it('Four submarine', done => {
-                    expect(game.availableShips[ShipType.SUBMARINE]).to.equal(4);
+                    expect(game.availableShips[Ship.Type.SUBMARINE]).to.equal(4);
                     done();
                 });
             });
@@ -65,7 +64,7 @@ describe('Game', () => {
         describe('Placing ships', () => {
             let firstShipID = uuid();
             it('When place a ship, all surrounding grids will be marked as unavailable', done => {
-                const ship = Ship.create(firstShipID, ShipType.BATTLESHIP);
+                const ship = Ship.create(firstShipID, Ship.Type.BATTLESHIP);
                 const coordinate = new Coordinate(5, 5);
                 game.placeShip(ship, coordinate, ShipDirection.HORIZONTAL);
                 const surroundingGrids = [ /* [y, x] */
@@ -82,7 +81,7 @@ describe('Game', () => {
             });
 
             it('After deployed, available ships of that type will be decrease and be removed when become zero', done => {
-                expect(game.availableShips[ShipType.BATTLESHIP]).to.be.undefined;
+                expect(game.availableShips[Ship.Type.BATTLESHIP]).to.be.undefined;
                 done();
             });
 
@@ -92,20 +91,20 @@ describe('Game', () => {
             });
 
             it('Can not place ship that no longer available', done => {
-                const ship = Ship.create(uuid(), ShipType.BATTLESHIP);
+                const ship = Ship.create(uuid(), Ship.Type.BATTLESHIP);
                 const coordinate = new Coordinate(0, 0);
                 expect(() => {
                     game.placeShip(ship, coordinate, ShipDirection.VERTICAL);
                 })
                     .to.throw(Error)
                     .includes({
-                        message: `No ${ShipType.BATTLESHIP} ship available to deploy`
+                        message: `No ${Ship.Type.BATTLESHIP} ship available to deploy`
                     });
                 done();
             });
 
             it('Can not place ship on unavailable grid', done => {
-                const ship = Ship.create(uuid(), ShipType.CRUISER);
+                const ship = Ship.create(uuid(), Ship.Type.CRUISER);
                 const coordinate = new Coordinate(4, 6);
                 expect(() => {
                     game.placeShip(ship, coordinate, ShipDirection.HORIZONTAL)
@@ -130,7 +129,7 @@ describe('Game', () => {
 
             describe('Can not place ship that exceed board boundary', () => {
                 it('Exceed bottom-right boundary', done => {
-                    const ship = Ship.create(uuid(), ShipType.CRUISER);
+                    const ship = Ship.create(uuid(), Ship.Type.CRUISER);
                     const coordinate = new Coordinate(8, 8);
                     expect(() => {
                         game.placeShip(ship, coordinate, ShipDirection.HORIZONTAL)
@@ -143,7 +142,7 @@ describe('Game', () => {
                 });
 
                 it('Exceed bottom-left boundary', done => {
-                    const ship = Ship.create(uuid(), ShipType.CRUISER);
+                    const ship = Ship.create(uuid(), Ship.Type.CRUISER);
                     const coordinate = new Coordinate(0, 8);
                     expect(() => {
                         game.placeShip(ship, coordinate, ShipDirection.VERTICAL)
@@ -156,7 +155,7 @@ describe('Game', () => {
                 });
 
                 it('Exceed top-right boundary', done => {
-                    const ship = Ship.create(uuid(), ShipType.CRUISER);
+                    const ship = Ship.create(uuid(), Ship.Type.CRUISER);
                     const coordinate = new Coordinate(8, 0);
                     expect(() => {
                         game.placeShip(ship, coordinate, ShipDirection.HORIZONTAL)
@@ -173,26 +172,26 @@ describe('Game', () => {
 
     describe('Battle phase', () => {
         const game = new Game(uuid(), 10, 10);
-        const battleShip = Ship.create(uuid(), ShipType.BATTLESHIP);
+        const battleShip = Ship.create(uuid(), Ship.Type.BATTLESHIP);
 
         before(() => {
             // override available ships
             game.availableShips = {};
-            game.availableShips[ShipType.BATTLESHIP] = 1;
-            game.availableShips[ShipType.SUBMARINE] = 2;
+            game.availableShips[Ship.Type.BATTLESHIP] = 1;
+            game.availableShips[Ship.Type.SUBMARINE] = 2;
         });
 
         it('When all ships are deployed, game will go to battle phase', done => {
             game.placeShip(battleShip, new Coordinate(0, 0), ShipDirection.HORIZONTAL);
-            game.placeShip(Ship.create(uuid(), ShipType.SUBMARINE), new Coordinate(4, 4), ShipDirection.HORIZONTAL);
-            game.placeShip(Ship.create(uuid(), ShipType.SUBMARINE), new Coordinate(8, 8), ShipDirection.HORIZONTAL);
+            game.placeShip(Ship.create(uuid(), Ship.Type.SUBMARINE), new Coordinate(4, 4), ShipDirection.HORIZONTAL);
+            game.placeShip(Ship.create(uuid(), Ship.Type.SUBMARINE), new Coordinate(8, 8), ShipDirection.HORIZONTAL);
             expect(game.isBattlePhase).to.be.true;
             done();
         });
 
         it('Can not place ship if game is not in planning phase', done => {
             expect(() => {
-                game.placeShip(Ship.create(uuid(), ShipType.CRUISER), new Coordinate(8, 8), ShipDirection.HORIZONTAL);
+                game.placeShip(Ship.create(uuid(), Ship.Type.CRUISER), new Coordinate(8, 8), ShipDirection.HORIZONTAL);
             })
                 .to.throws(Error)
                 .includes({

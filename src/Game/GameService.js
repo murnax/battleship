@@ -24,7 +24,7 @@ class GameService {
      * 
      */
     async placeShip(id, shipType, x, y, direction) {
-        const ship = Ship.Ship.create(uuid(), shipType);
+        const ship = Ship.create(uuid(), shipType);
         const game = await this._gameRepository.getGameByID(id);
 
         game.placeShip(ship, new Coordinate(x, y), direction);

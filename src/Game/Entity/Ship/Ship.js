@@ -1,16 +1,18 @@
-class ShipType {
-    static get BATTLESHIP() { return 'BATTLESHIP'; }
-    static get CRUISER() { return 'CRUISER'; }
-    static get DESTROYER() { return 'DESTROYER'; }
-    static get SUBMARINE() { return 'SUBMARINE'; }
+
+const ShipType = {
+    BATTLESHIP: 'BATTLESHIP',
+    CRUISER: 'CRUISER',
+    DESTROYER: 'DESTROYER',
+    SUBMARINE: 'SUBMARINE'
 }
-exports.ShipType = ShipType;
 
 class Ship {
 
+    static get Type() { return ShipType; }
+
     /**
      * @param {string} id
-     * @param {ShipType} type 
+     * @param {string} type 
      * @param {boolean} isSunk
      * @returns {Ship}
      */
@@ -41,7 +43,7 @@ class Ship {
 
     }
 }
-exports.Ship = Ship;
+module.exports = Ship;
 
 class Battleship extends Ship {
 
