@@ -17,14 +17,25 @@ describe('Game', () => {
                 done();
             });
 
-            it('There should not be any ship deployed', done => {
-                expect(Object.keys(game.deployedShips)).lengthOf(0);
+            it('Board size is 10 * 10', done => {
+                expect(game.weight).to.equal(10);
+                expect(game.height).to.equal(10);
                 done();
             });
 
             it('All grids must be water grid type', done => {
                 const areAllWaterGrids = game.board.every(n => n.every(m => m.type === GridType.WATER));
                 expect(areAllWaterGrids).to.be.true;
+                done();
+            });
+
+            it('There should not be any ship deployed', done => {
+                expect(Object.keys(game.deployedShips)).lengthOf(0);
+                done();
+            });
+
+            it('There should not be any ship destroyed', done => {
+                expect(Object.keys(game.destroyedShips)).lengthOf(0);
                 done();
             });
 
@@ -52,9 +63,9 @@ describe('Game', () => {
         });
 
         describe('Placing ships', () => {
-
+            let firstShipID = uuid();
             it('When place a ship, all surrounding grids will be marked as unavailable', done => {
-                const ship = Ship.create(uuid(), ShipType.BATTLESHIP);
+                const ship = Ship.create(firstShipID, ShipType.BATTLESHIP);
                 const coordinate = new Coordinate(5, 5);
                 game.placeShip(ship, coordinate, ShipDirection.HORIZONTAL);
                 const surroundingGrids = [ /* [y, x] */
@@ -72,6 +83,11 @@ describe('Game', () => {
 
             it('After deployed, available ships of that type will be decrease and be removed when become zero', done => {
                 expect(game.availableShips[ShipType.BATTLESHIP]).to.be.undefined;
+                done();
+            });
+
+            it('After deployed, ship will be add to deployed ships map', done => {
+                expect(game.deployedShips[firstShipID]).to.exist;
                 done();
             });
 
@@ -162,6 +178,17 @@ describe('Game', () => {
             done();
         });
 
+        it('Can not place ship if game is not in planning phase', done => {
+            expect(() => {
+                game.placeShip(Ship.create(uuid(), ShipType.CRUISER), new Coordinate(8, 8), ShipDirection.HORIZONTAL);
+            })
+                .to.throws(Error)
+                .includes({
+                    message: 'Game is not in planning phase'
+                });
+            done();
+        });
+
         it('Game can no longer be resetted after enter battle phase', done => {
             expect(() => {
                 game.reset()
@@ -175,7 +202,9 @@ describe('Game', () => {
 
         describe('Attacking', () => {
 
-            it('When water grid is attacked, water grid will be marked as attacked', done => {
+            it('When attack miss (attack on water grid), water grid will be marked as attacked', done => {
+                game.attack(new Coordinate(0, 0));
+
                 done();
             });
 
