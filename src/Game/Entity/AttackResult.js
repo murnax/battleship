@@ -1,11 +1,13 @@
 const Coordinate = require('./Coordinate');
 const { Grid, GridType } = require('./Grid');
-const { Ship } = require('./Ship/Ship');
+const Ship = require('./Ship/Ship');
+const Game = require('./Game');
 
 const AttackResultType = {
     MISS: 'MISS',
     HIT: 'HIT',
-    SANK: 'SANK'
+    SANK: 'SANK',
+    GAME_OVER: 'GAME OVER'
 }
 
 class AttackResult {
@@ -15,13 +17,18 @@ class AttackResult {
     /**
      * 
      * @param {Grid} grid 
+     * @param {Game} game
      */
-    static create(grid) {
+    static create(grid, game) {
         const coordinate = new Coordinate(grid.x, grid.y);
         switch (grid.type) {
             case GridType.WATER:
                 return new MissAttack(coordinate);
             case GridType.SHIP:
+                if (game.isGameOver) {
+                    return new GameOverAttack(coordinate, game);
+                }
+
                 if (grid.ship.isSunk) {
                     return new SankAttack(coordinate, grid.ship);
                 } else {
@@ -74,7 +81,22 @@ class SankAttack extends AttackResult {
      */
     constructor(coordinate, ship) {
         super(coordinate);
-        this.message = `You just sank ${ship.type}`;
+        this.message = `You just sank the ${ship.type}`;
         this.type = AttackResultType.SANK;
+    }
+}
+
+class GameOverAttack extends AttackResult {
+
+    /**
+     * 
+     * @param {Coordinate} coordinate 
+     * @param {Game} game 
+     */
+    constructor(coordinate, game) {
+        super(coordinate);
+        this.message = 'Game over'
+        this.totalAttack = game.totalAttack;
+        this.totalMissedAttack = game.totalMissedAttack;
     }
 }

@@ -212,7 +212,7 @@ class Game {
             this.totalMissedAttack++;
         }
         this.totalAttack++;
-        return AttackResult.create(grid);
+        return AttackResult.create(grid, this);
     }
 
     reset() {
