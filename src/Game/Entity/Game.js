@@ -3,6 +3,7 @@ const { Ship, ShipType } = require('./Ship/Ship');
 const { Grid, GridType } = require('./Grid');
 const DeployedShip = require('./DeployedShip');
 const Coordinate = require('./Coordinate');
+const AttackResult = require('./AttackResult');
 
 const GamePhase = {
     PLANNING: 'PLANNING',
@@ -180,18 +181,14 @@ class Game {
 
         const { x, y } = coordinate;
         const grid = this.board[y][x];
-        console.log(`\nAttacking to x: ${grid.x}, y: ${grid.y}`);
         if (grid.isAttacked) {
             throw new Error('Grid is already attacked');
         }
 
+        grid.attack();
         if (grid.type === GridType.SHIP) {
             const deployedShip = this.deployedShips[grid.ship.id];
-            console.log(`Hit!`);
-            grid.attack();
-
             if (deployedShip.grids.every(n => n.isAttacked)) {
-                console.log(`Sank ${grid.ship.type}`);
                 deployedShip.ship.isSunk = true;
                 this.destroyedShips[grid.ship.id] = deployedShip;
                 delete this.deployedShips[grid.ship.id];
@@ -200,11 +197,10 @@ class Game {
                 }
             }
         } else if (grid.type === GridType.WATER) {
-            console.log('Miss!');
             this.totalMissedAttack++;
         }
-        grid.attack();
         this.totalAttack++;
+        return AttackResult.create(grid);
     }
 
     reset() {

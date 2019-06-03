@@ -59,8 +59,8 @@ class GameService {
         const game = await this._gameRepository.getGameByID(id);
         let board;
         if (userType === 'ATTACKER') {
-            if (!game.isBattlePhase) {
-                throw new Error('Game is not in battle phase');
+            if (game.isPlanningPhase) {
+                throw new Error('Game is in planning phase');
             }
             board = game.board.map(n =>
                 n.map(m => {
@@ -90,13 +90,10 @@ class GameService {
     }
 
     async attack(id, x, y) {
-        try {
-            const game = await this._gameRepository.getGameByID(id);
-            game.attack(new Coordinate(x, y));
-            await this._gameRepository.update(game);
-        } catch (error) {
-            console.log(error);
-        }
+        const game = await this._gameRepository.getGameByID(id);
+        const attackResult = game.attack(new Coordinate(x, y));
+        await this._gameRepository.update(game);
+        return attackResult;
     }
 
     async reset(id) {

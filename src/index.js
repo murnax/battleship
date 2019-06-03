@@ -57,8 +57,11 @@ app.post('/reset', async (req, res, next) => {
 app.post('/attack', async (req, res, next) => {
     try {
         const { id, x, y } = req.body;
-        await gameService.attack(id, x, y);
-        res.json('ok');
+        const attackResult = await gameService.attack(id, x, y);
+        res.json({
+            status: 200,
+            body: attackResult
+        });
     } catch (error) {
         next(error);
     }
@@ -75,6 +78,7 @@ app.post('/ship', async (req, res, next) => {
 });
 
 app.use(function (error, req, res, next) {
+    console.log(error.stack);
     res.status(400).json({ status: 400, message: error.message });
 });
 
