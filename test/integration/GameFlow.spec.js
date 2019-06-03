@@ -1,7 +1,9 @@
 const chai = require('chai');
 const expect = chai.expect;
 const { Game, Ship, ShipDirection, AttackResult } = require('../../src/Game');
-const GameService = require('./GameService');
+const app = require('../../src');
+const request = require('supertest')(app);
+const GameService = require('./GameService')(request);
 
 describe('Game flow', () => {
     let gameID, shipGrids;
