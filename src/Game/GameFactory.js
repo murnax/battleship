@@ -20,6 +20,8 @@ class GameFactory {
      */
     reconstitute(gameEntityModel) {
         if (!gameEntityModel.deployedShips) gameEntityModel.deployedShips = {};
+        if (!gameEntityModel.destroyedShips) gameEntityModel.destroyedShips = {};
+
         for (let deployedShip of Object.values(gameEntityModel.deployedShips)) {
             const { id, type, isSunk } = deployedShip.ship;
             const ship = Ship.create(id, type, isSunk);
