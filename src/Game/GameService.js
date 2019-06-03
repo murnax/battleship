@@ -29,6 +29,7 @@ class GameService {
 
         game.placeShip(ship, new Coordinate(x, y), direction);
         await this._gameRepository.update(game);
+        return ship;
     }
 
     /**
