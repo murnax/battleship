@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "main": "Board.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon -w src/ src/index",
-    "test:unit": "mocha $(find test/unit -name '*.spec.js')"
+    "test": "nyc mocha $(find test/unit -name '*.spec.js')",
+    "dev": "nodemon -w src/ src/index"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +19,8 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^6.1.4",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "nyc": "^14.1.1"
   },
   "description": ""
 }
