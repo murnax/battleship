@@ -47,7 +47,10 @@ app.post('/reset', async (req, res, next) => {
     try {
         await gameService.reset(req.body.id);
         res.json({
-            status: 200
+            status: 200,
+            data: {
+                message: 'Reset successfully'
+            }
         });
     } catch (error) {
         next(error);

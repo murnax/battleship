@@ -1,5 +1,5 @@
 const uuid = require('uuid');
-const { GameRepository, GameFactory, Game, Ship, Coordinate, GameState } = require('.');
+const { GameRepository, GameFactory, Game, Ship, Coordinate, GameState, AttackResult } = require('.');
 const { GridType } = require('.').Grid;
 
 class GameService {
@@ -60,6 +60,13 @@ class GameService {
         return GameState.create(userType, game);
     }
 
+    /**
+     * 
+     * @param {string} id 
+     * @param {number} x 
+     * @param {number} y 
+     * @returns {Promise<AttackResult>}
+     */
     async attack(id, x, y) {
         const game = await this._gameRepository.getGameByID(id);
         const attackResult = game.attack(new Coordinate(x, y));
@@ -67,6 +74,10 @@ class GameService {
         return attackResult;
     }
 
+    /**
+     * 
+     * @param {string} id 
+     */
     async reset(id) {
         const game = await this._gameRepository.getGameByID(id);
         game.reset();
