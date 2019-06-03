@@ -4,6 +4,7 @@
   "main": "Board.js",
   "scripts": {
     "test": "nyc mocha $(find test/unit -name '*.spec.js')",
+    "test:integration": "mocha $(find test/integration -name '*.spec.js')",
     "dev": "nodemon -w src/ src/index"
   },
   "keywords": [],
@@ -20,7 +21,8 @@
     "chai": "^4.2.0",
     "mocha": "^6.1.4",
     "nodemon": "^1.19.1",
-    "nyc": "^14.1.1"
+    "nyc": "^14.1.1",
+    "supertest": "^4.0.2"
   },
   "description": ""
 }
