@@ -35,6 +35,8 @@ class DefenderPlanningPhase extends GameState {
         this.availableShips = game.availableShips;
         this.deployedShips = game.deployedShips;
         this.destroyedShips = game.destroyedShips;
+        this.totalAttack = game.totalAttack;
+        this.totalMissedAttack = game.totalMissedAttack;
     }
 }
 
