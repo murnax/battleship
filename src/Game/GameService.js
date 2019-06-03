@@ -88,7 +88,7 @@ class GameService {
 
         // console.log(board);
 
-        return new GameState(board, game.phase, game.availableShips, game.deployedShips, game.destroyedShips);
+        return GameState.create(userType, game);
     }
 
     async attack(id, x, y) {
