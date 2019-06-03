@@ -1,6 +1,5 @@
 const uuid = require('uuid');
-const { GameRepository, GameFactory, Game, Ship, Coordinate, GameState, AttackResult } = require('.');
-const { GridType } = require('.').Grid;
+const { GameRepository, GameFactory, Ship, Coordinate, GameState, AttackResult } = require('.');
 
 class GameService {
 
@@ -22,6 +21,11 @@ class GameService {
 
     /**
      * 
+     * @param {string} id 
+     * @param {string} shipType 
+     * @param {number} x 
+     * @param {number} y 
+     * @param {string} direction 
      */
     async placeShip(id, shipType, x, y, direction) {
         const ship = Ship.create(uuid(), shipType);

@@ -16,24 +16,36 @@ class GameState {
                 return game.phase === Game.GamePhase.BATTLE ? new DefenderBattlePhase(game) : new DefenderPlanningPhase(game);
         }
     }
+
+    constructor(game) {
+        this.phase = game.phase;
+    }
 }
 module.exports = GameState;
 
 class DefenderPlanningPhase extends GameState {
 
+    /**
+     *
+     * @param {Game} game
+     */
     constructor(game) {
-        super();
+        super(game);
         this.board = game.board.map(n => n.map(m => m.available ? 0 : m.type === GridType.SHIP ? 2 : 1));;
-        // this.phase = phase;
-        // this.availableShips = availableShips;
-        // this.deployedShips = deployedShips;
-        // this.destroyedShips = destroyedShips;
+        this.availableShips = game.availableShips;
+        this.deployedShips = game.deployedShips;
+        this.destroyedShips = game.destroyedShips;
     }
 }
 
 class DefenderBattlePhase extends GameState {
+
+    /**
+     * 
+     * @param {Game} game 
+     */
     constructor(game) {
-        super();
+        super(game);
         this.board = game.board.map(n =>
             n.map(m => {
                 if (m.type === GridType.WATER) {
@@ -41,8 +53,7 @@ class DefenderBattlePhase extends GameState {
                 } else if (m.type === GridType.SHIP) {
                     return m.ship.isSunk ? 4 : m.isAttacked ? 3 : 2;
                 }
-            }));;
-        // this.phase = phase;
+            }));
         // this.availableShips = availableShips;
         // this.deployedShips = deployedShips;
         // this.destroyedShips = destroyedShips;
@@ -50,8 +61,13 @@ class DefenderBattlePhase extends GameState {
 }
 
 class AttackerBattlePhase extends GameState {
+
+    /**
+     *
+     * @param {Game} game
+     */
     constructor(game) {
-        super();
+        super(game);
         this.board = game.board.map(n =>
             n.map(m => {
                 if (!m.isAttacked) return 0;
@@ -60,7 +76,7 @@ class AttackerBattlePhase extends GameState {
                     if (m.ship.isSunk) return 3;
                     return 2;
                 }
-            }));;
+            }));
         // this.phase = phase;
         // this.availableShips = availableShips;
         // this.deployedShips = deployedShips;
