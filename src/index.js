@@ -60,7 +60,7 @@ app.post('/attack', async (req, res, next) => {
         const attackResult = await gameService.attack(id, x, y);
         res.json({
             status: 200,
-            body: attackResult
+            data: attackResult
         });
     } catch (error) {
         next(error);
@@ -70,8 +70,13 @@ app.post('/attack', async (req, res, next) => {
 app.post('/ship', async (req, res, next) => {
     try {
         const { id, direction, x, y, ship_type } = req.body;
-        await gameService.placeShip(id, ship_type, x, y, direction);
-        res.json({ ok: 1 });
+        const ship = await gameService.placeShip(id, ship_type, x, y, direction);
+        res.json({
+            status: 200,
+            data: {
+                message: `placed ${ship.type}`
+            }
+        });
     } catch (error) {
         next(error);
     }
