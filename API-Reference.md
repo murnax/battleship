@@ -14,6 +14,7 @@
     }
 }
 ````
+___
 
 ### Get the current state of the ocean and the fleet
 
@@ -53,6 +54,7 @@
     }
 }
 ````
+___
 
 ### Place a single ship into the ocean
 
@@ -80,6 +82,8 @@
 }
 ````
 
+___
+
 ### Reset the game to an initial state
 
 #### Example Request:
@@ -101,6 +105,8 @@
     }
 }
 ````
+
+___
 
 ### Attack to a specific target on the ocean
 
