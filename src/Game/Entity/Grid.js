@@ -40,6 +40,7 @@ class Grid {
         this.isAttacked = isAttacked;
         this.available = available;
         this.type = GridType.WATER;
+        this.ship = null;
     }
 
     attack() {
