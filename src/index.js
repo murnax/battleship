@@ -70,11 +70,11 @@ app.post('/attack', async (req, res, next) => {
 app.post('/ship', async (req, res, next) => {
     try {
         const { id, direction, x, y, ship_type } = req.body;
-        const ship = await gameService.placeShip(id, ship_type, x, y, direction);
+        const deployedShip = await gameService.placeShip(id, ship_type, x, y, direction);
         res.json({
             status: 200,
             data: {
-                message: `placed ${ship.type}`
+                message: `placed ${deployedShip.ship.type}`
             }
         });
     } catch (error) {

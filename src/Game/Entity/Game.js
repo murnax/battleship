@@ -43,10 +43,10 @@ class Game {
 
     _generateGrid(weight, height) {
         let board = [];
-        for (let i = 0; i < weight; i++) {
-            board[i] = [];
-            for (let j = 0; j < height; j++) {
-                board[i][j] = Grid.create(GridType.WATER, i, j, false, { available: true });
+        for (let y = 0; y < weight; y++) {
+            board[y] = [];
+            for (let x = 0; x < height; x++) {
+                board[y][x] = Grid.create(GridType.WATER, x, y, false, { available: true });
             }
         }
         return board;
@@ -67,7 +67,8 @@ class Game {
      * 
      * @param {Ship} ship 
      * @param {Coordinate} coordinate
-     * @param {*} direction 
+     * @param {string} direction 
+     * @returns {DeployedShip}
      */
     placeShip(ship, coordinate, direction) {
         if (!this.isPlanningPhase) {
@@ -118,6 +119,8 @@ class Game {
 
         // Go battle phase if all ships have been deployed
         if (!Object.keys(this.availableShips).length) this.phase = GamePhase.BATTLE;
+
+        return this.deployedShips[ship.id];
     }
 
     /**

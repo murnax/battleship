@@ -27,9 +27,9 @@ class GameService {
         const ship = Ship.create(uuid(), shipType);
         const game = await this._gameRepository.getGameByID(id);
 
-        game.placeShip(ship, new Coordinate(x, y), direction);
+        const deployedShip = game.placeShip(ship, new Coordinate(x, y), direction);
         await this._gameRepository.update(game);
-        return ship;
+        return deployedShip;
     }
 
     /**
@@ -86,7 +86,9 @@ class GameService {
                 board = game.board.map(n => n.map(m => m.available ? 0 : m.type === GridType.SHIP ? 2 : 1));
             }
         }
-        console.log(board);
+
+        // console.log(board);
+
         return board;
     }
 

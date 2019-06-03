@@ -1,4 +1,4 @@
-const { Ship } = require('./Ship/Ship');
+const Ship = require('./Ship/Ship');
 const { Grid } = require('./Grid');
 
 class DeployedShip {
@@ -9,7 +9,10 @@ class DeployedShip {
      * @param {Array<Grid>} grids 
      */
     constructor(ship, grids) {
+
+        /** @type {Ship} */
         this.ship = ship;
+        /** @type {Array<Grid>} */
         this.grids = grids;
     }
 }
