@@ -4,6 +4,7 @@ exports.Ship = require('./Entity/Ship/Ship');
 exports.ShipDirection = require('./Entity/ShipDirection');
 exports.Grid = require('./Entity/Grid');
 exports.Coordinate = require('./Entity/Coordinate');
+exports.AttackResult = require('./Entity/AttackResult');
 
 exports.GameRepository = require('./Repository/GameRepository');
 exports.GameFactory = require('./GameFactory');
