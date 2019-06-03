@@ -104,14 +104,14 @@ class Game {
         if (direction === ShipDirection.HORIZONTAL) {
             for (let i = x - 1; i < x + ship.length + 1; i++) {
                 for (let j = y - 1; j <= y + 1; j++) {
-                    if (i < 0 || j < 0) continue;
+                    if (i < 0 || j < 0 || i >= this.height || j >= this.weight) continue;
                     this.board[j][i].available = false;
                 }
             }
         } else if (direction === ShipDirection.VERTICAL) {
             for (let i = x - 1; i <= x + 1; i++) {
                 for (let j = y - 1; j < y + ship.length + 1; j++) {
-                    if (i < 0 || j < 0) continue;
+                    if (i < 0 || j < 0 || i >= this.height || j >= this.weight) continue;
                     this.board[j][i].available = false;
                 }
             }
