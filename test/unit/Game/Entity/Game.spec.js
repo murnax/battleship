@@ -117,6 +117,17 @@ describe('Game', () => {
                 done();
             });
 
+            it('Can not attack if game is not in battle phase', done => {
+                expect(() => {
+                    game.attack(new Coordinate(0, 1));
+                })
+                    .to.throws(Error)
+                    .includes({
+                        message: 'Game is not in battle phase'
+                    });
+                done();
+            });
+
             describe('Can not place ship that exceed board boundary', () => {
                 it('Exceed bottom-right boundary', done => {
                     const ship = Ship.create(uuid(), ShipType.CRUISER);
@@ -162,6 +173,7 @@ describe('Game', () => {
 
     describe('Battle phase', () => {
         const game = new Game(uuid(), 10, 10);
+        const battleShip = Ship.create(uuid(), ShipType.BATTLESHIP);
 
         before(() => {
             // override available ships
@@ -171,7 +183,7 @@ describe('Game', () => {
         });
 
         it('When all ships are deployed, game will go to battle phase', done => {
-            game.placeShip(Ship.create(uuid(), ShipType.BATTLESHIP), new Coordinate(0, 0), ShipDirection.HORIZONTAL);
+            game.placeShip(battleShip, new Coordinate(0, 0), ShipDirection.HORIZONTAL);
             game.placeShip(Ship.create(uuid(), ShipType.SUBMARINE), new Coordinate(4, 4), ShipDirection.HORIZONTAL);
             game.placeShip(Ship.create(uuid(), ShipType.SUBMARINE), new Coordinate(8, 8), ShipDirection.HORIZONTAL);
             expect(game.isBattlePhase).to.be.true;
@@ -230,6 +242,13 @@ describe('Game', () => {
                 game.attack(new Coordinate(2, 0));
                 const attackResult = game.attack(new Coordinate(3, 0));
                 expect(attackResult.type).to.equal(AttackResult.Type.SANK);
+                done();
+            });
+
+            it('Sank ship will be moved from deployed map to destroyed map', done => {
+                const battleShipID = battleShip.id;
+                expect(game.deployedShips).to.not.have.property(battleShipID);
+                expect(game.destroyedShips).to.have.property(battleShipID);
                 done();
             });
 
