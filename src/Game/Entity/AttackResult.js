@@ -2,7 +2,15 @@ const Coordinate = require('./Coordinate');
 const { Grid, GridType } = require('./Grid');
 const { Ship } = require('./Ship/Ship');
 
+const AttackResultType = {
+    MISS: 'MISS',
+    HIT: 'HIT',
+    SANK: 'SANK'
+}
+
 class AttackResult {
+
+    static get Type() { return AttackResultType; }
 
     /**
      * 
@@ -40,7 +48,8 @@ class MissAttack extends AttackResult {
      */
     constructor(coordinate) {
         super(coordinate);
-        this.message = 'Miss'
+        this.message = 'Miss';
+        this.type = AttackResultType.MISS;
     }
 }
 
@@ -53,6 +62,7 @@ class HitAttack extends AttackResult {
     constructor(coordinate) {
         super(coordinate);
         this.message = 'Hit'
+        this.type = AttackResultType.HIT;
     }
 }
 
@@ -64,6 +74,7 @@ class SankAttack extends AttackResult {
      */
     constructor(coordinate, ship) {
         super(coordinate);
-        this.message = `You just sank ${ship.type}`
+        this.message = `You just sank ${ship.type}`;
+        this.type = AttackResultType.SANK;
     }
 }
