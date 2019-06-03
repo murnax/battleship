@@ -54,9 +54,9 @@ class DefenderBattlePhase extends GameState {
                     return m.ship.isSunk ? 4 : m.isAttacked ? 3 : 2;
                 }
             }));
-        // this.availableShips = availableShips;
-        // this.deployedShips = deployedShips;
-        // this.destroyedShips = destroyedShips;
+        this.availableShips = game.availableShips;
+        this.deployedShips = game.deployedShips;
+        this.destroyedShips = game.destroyedShips;
     }
 }
 
@@ -77,9 +77,11 @@ class AttackerBattlePhase extends GameState {
                     return 2;
                 }
             }));
-        // this.phase = phase;
-        // this.availableShips = availableShips;
-        // this.deployedShips = deployedShips;
-        // this.destroyedShips = destroyedShips;
+
+        for (let deployedShip of Object.keys(game.deployedShips)) {
+            delete game.deployedShips[deployedShip].grids;
+        }
+        this.deployedShips = game.deployedShips;
+        this.destroyedShips = game.destroyedShips;
     }
 }
