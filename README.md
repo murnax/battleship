@@ -4,7 +4,13 @@ Node.js backend API for Battleship game.
 
 ## Getting Started
 
-### Installing
+### Prerequisites
+
+* MongoDB  running locally
+
+_Or if you have docker running locally:_ ```docker run --name battleship-db -p 27017:27017 mongo```
+
+### Installing dependencies
 
 ```
 npm install
