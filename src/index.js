@@ -17,11 +17,11 @@ const gameService = new GameService(new GameRepository(null, gameFactory), gameF
 app.get('/', async (req, res, next) => {
     try {
         const { id, user_type } = req.query;
-        const board = await gameService.getBoard(id, user_type.toUpperCase());
+        const gameState = await gameService.getBoard(id, user_type.toUpperCase());
         res.json({
             status: 200,
             data: {
-                board
+                gameState
             }
         });
     } catch (error) {

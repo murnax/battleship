@@ -1,5 +1,5 @@
 const uuid = require('uuid');
-const { GameRepository, GameFactory, Game, Ship, Coordinate } = require('.');
+const { GameRepository, GameFactory, Game, Ship, Coordinate, GameState } = require('.');
 const { GridType } = require('.').Grid;
 
 class GameService {
@@ -56,7 +56,6 @@ class GameService {
      * @param {string} userType 
      */
     async getBoard(id, userType) {
-
         const game = await this._gameRepository.getGameByID(id);
         let board;
         if (userType === 'ATTACKER') {
@@ -89,7 +88,7 @@ class GameService {
 
         // console.log(board);
 
-        return board;
+        return new GameState(board, game.phase, game.availableShips, game.destroyedShips);
     }
 
     async attack(id, x, y) {
