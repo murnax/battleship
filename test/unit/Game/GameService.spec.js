@@ -143,7 +143,9 @@ describe('Game service', () => {
                 });
 
                 it('Attacked water grid = 1', async () => {
-                    await gameService.attack(gameID, 0, 9); // bottom-left
+                    await gameService.attack(gameID, 0, 9); // attack bottom-left of the board
+
+                    // Grid { x: 0, y: 9 } must be attacked water grid (1)
                     const { board } = await gameService.getBoard(gameID, attacker);
                     expect(board[9][0]).to.equal(1); // [y, x]
                 });
