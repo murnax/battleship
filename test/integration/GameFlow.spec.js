@@ -65,7 +65,8 @@ describe('Game flow', () => {
     });
 
     describe('Battle phase', () => {
-
+        let totalAttack = 0;
+        let totalMissedAttack = 0;
         it('Attacker get game state', async () => {
             const response = await GameService.getGameState(gameID, 'ATTACKER');
             const gameState = response.body.data.gameState;
@@ -94,15 +95,31 @@ describe('Game flow', () => {
             const gameState = response.body.data.gameState;
             const board = gameState.board;
             expect(board[0][0]).to.equal(1);
+            totalMissedAttack++;
+            totalAttack++;
         });
 
         it('Attack every single ships', async () => {
-            for (let i = 0; i < shipGrids.length; i++) {
+            for (let i = 0; i < shipGrids.length - 1; i++) {
                 const [x, y] = shipGrids[i];
                 const response = await GameService.attack(gameID, x, y);
                 expect(response.status).to.equal(200);
                 expect(response.body.data.type).to.be.oneOf([AttackResult.Type.HIT, AttackResult.Type.SANK]);
+                totalAttack++;
             }
+        });
+
+        it('Attack last ship grid will result in game over response with number of total attack and missed', async () => {
+            const [x, y] = shipGrids[shipGrids.length - 1];
+            const response = await GameService.attack(gameID, x, y);
+            const { data } = response.body;
+            expect(response.status).to.equal(200);
+            totalAttack++;
+
+            expect(data.message).to.equal('Game over');
+            expect(data.totalAttack).to.equal(totalAttack);
+            expect(data.totalMissedAttack).to.equal(totalMissedAttack);
+
         });
 
         it('Game is over when all ships are sank', async () => {
