@@ -18,6 +18,10 @@ app.get('/', async (req, res, next) => {
     try {
         const { id, user_type } = req.query;
         const gameState = await gameService.getBoard(id, user_type.toUpperCase());
+
+        // Comment this line out to see board state
+        // console.log(gameState.board);
+
         res.json({
             status: 200,
             data: {
