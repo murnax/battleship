@@ -178,6 +178,10 @@ class Game {
      * @param {Coordinate} coordinate
      */
     attack(coordinate) {
+        if (this.isGameOver) {
+            throw new Error('Game is already over');
+        }
+
         if (!this.isBattlePhase) {
             throw new Error('Game is not in battle phase');
         }
@@ -191,10 +195,15 @@ class Game {
         grid.attack();
         if (grid.type === GridType.SHIP) {
             const deployedShip = this.deployedShips[grid.ship.id];
+
+            // if every ship grids are attacked, mark ship as sank,
+            // move ship from deployed map to destroyed map
             if (deployedShip.grids.every(n => n.isAttacked)) {
                 deployedShip.ship.isSunk = true;
                 this.destroyedShips[grid.ship.id] = deployedShip;
                 delete this.deployedShips[grid.ship.id];
+
+                // Game is over when all ships are destroyed
                 if (!Object.keys(this.deployedShips).length) {
                     this.phase = GamePhase.OVER;
                 }

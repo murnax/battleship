@@ -257,6 +257,17 @@ describe('Game', () => {
                 expect(game.isGameOver).to.be.true;
                 done();
             });
+
+            it('Can no longer attack when game is over', done => {
+                expect(() => {
+                    game.attack(new Coordinate(4, 4));
+                })
+                    .to.throws(Error)
+                    .includes({
+                        message: 'Game is already over'
+                    });
+                done();
+            });
         });
     });
 });

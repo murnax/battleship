@@ -6,6 +6,7 @@ exports.Grid = require('./Entity/Grid');
 exports.Coordinate = require('./Entity/Coordinate');
 exports.AttackResult = require('./Entity/AttackResult');
 
+// Application and infrastructure layer modules
 exports.GameRepository = require('./Repository/GameRepository');
 exports.GameFactory = require('./GameFactory');
 exports.GameService = require('./GameService');
