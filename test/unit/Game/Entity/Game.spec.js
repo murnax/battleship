@@ -2,7 +2,7 @@ const chai = require('chai');
 const expect = chai.expect;
 
 const uuid = require('uuid');
-const { Game, Grid, ShipDirection, Coordinate } = require('../../../../src/Game');
+const { Game, Grid, ShipDirection, Coordinate, AttackResult } = require('../../../../src/Game');
 const { GridType } = require('../../../../src/Game').Grid;
 const { Ship, ShipType } = require('../../../../src/Game').Ship;
 
@@ -202,29 +202,43 @@ describe('Game', () => {
 
         describe('Attacking', () => {
 
-            it('When attack miss (attack on water grid), water grid will be marked as attacked', done => {
-                game.attack(new Coordinate(0, 0));
-
+            it('Attack on water will result as miss attack', done => {
+                const attackResult = game.attack(new Coordinate(3, 3));
+                expect(attackResult.type).to.equal(AttackResult.Type.MISS);
                 done();
             });
 
             it('Can not attack on attacked-grids', done => {
+                expect(() => {
+                    game.attack(new Coordinate(3, 3));
+                })
+                    .to.throws(Error)
+                    .includes({
+                        message: 'Grid is already attacked'
+                    });
                 done();
             });
 
-            it('When ship grid is attacked, ship grid will be marked as attacked', done => {
+            it('Attack on ship will result as hit attack', done => {
+                const attackResult = game.attack(new Coordinate(0, 0));
+                expect(attackResult.type).to.equal(AttackResult.Type.HIT);
                 done();
             });
 
-            it('When all ship grids are attacked, ship will be marked as is sunk', done => {
+            it('When all ship grids are attacked, ship will be marked as is sunk and sank attack will be returned', done => {
+                game.attack(new Coordinate(1, 0));
+                game.attack(new Coordinate(2, 0));
+                const attackResult = game.attack(new Coordinate(3, 0));
+                expect(attackResult.type).to.equal(AttackResult.Type.SANK);
                 done();
             });
 
             it('When all ships are sunk, game will be over', done => {
+                game.attack(new Coordinate(4, 4));
+                game.attack(new Coordinate(8, 8));
+                expect(game.isGameOver).to.be.true;
                 done();
             });
-
-
         });
     });
 });
