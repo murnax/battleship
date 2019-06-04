@@ -5,7 +5,7 @@
   "scripts": {
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "nyc mocha $(find test/unit -name '*.spec.js')",
-    "test:integration": "PORT=3001 mocha $(find test/integration -name '*.spec.js') --timeout 10000 --exit",
+    "test:integration": "PORT=3001 NODE_ENV=testing mocha $(find test/integration -name '*.spec.js') --timeout 10000 --exit",
     "dev": "nodemon -w src/ src/index"
   },
   "keywords": [],
