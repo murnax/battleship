@@ -1,8 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const morgan = require('morgan');
 const app = module.exports = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(morgan('[:date[clf]] :remote-addr :remote-user :method :url HTTP/:http-version :status :res[content-length] - :response-time ms'));
 
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/battleship', { useNewUrlParser: true });
@@ -12,7 +14,6 @@ db.on('error', console.error.bind(console, 'connection error:'));
 const { GameService, GameRepository, GameFactory } = require('./Game');
 const gameFactory = new GameFactory();
 const gameService = new GameService(new GameRepository(null, gameFactory), gameFactory);
-
 
 app.get('/', async (req, res, next) => {
     try {
