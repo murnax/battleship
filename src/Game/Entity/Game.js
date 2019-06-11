@@ -1,4 +1,5 @@
 const Entity = require('../../Entity');
+const ShipPlacedEvent = require('../../DomainEvent/ShipPlacedEvent');
 
 const ShipDirection = require('./ShipDirection');
 const Ship = require('./Ship/Ship');
@@ -123,6 +124,7 @@ class Game extends Entity {
         // Go battle phase if all ships have been deployed
         if (!Object.keys(this.availableShips).length) this.phase = GamePhase.BATTLE;
 
+        this.addDomainEvent(new ShipPlacedEvent(this.id, ship.id, ship.type, coordinate.x, coordinate.y, direction));
         return this.deployedShips[ship.id];
     }
 

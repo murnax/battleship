@@ -14,6 +14,9 @@ const gameSchema = new Schema({
 });
 const GameModel = mongoose.model('Game', gameSchema);
 
+const EventEmitter = require('eventemitter3');
+const event = new EventEmitter();
+
 const { Game } = require('..');
 
 class GameRepository {
