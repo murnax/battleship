@@ -1,3 +1,5 @@
+const Entity = require('../../Entity');
+
 const ShipDirection = require('./ShipDirection');
 const Ship = require('./Ship/Ship');
 const { Grid, GridType } = require('./Grid');
@@ -11,7 +13,7 @@ const GamePhase = {
     OVER: 'OVER'
 };
 
-class Game {
+class Game extends Entity {
 
     static get GamePhase() { return GamePhase; };
 
@@ -25,6 +27,7 @@ class Game {
      * @param {number} height 
      */
     constructor(id, weight, height) {
+        super();
         this.id = id;
         this.totalAttack = 0;
         this.totalMissedAttack = 0;
